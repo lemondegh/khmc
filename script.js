@@ -99,7 +99,7 @@ function populateClaimList() {
             <div id="card-${claim.claim_serial_no}" class="border rounded-lg p-4 flex justify-between items-center transition-all ${needToReview ? 'border-red-200 bg-red-50' : 'border-gray-200 bg-white'}">
                 <div>
                     <div class="flex items-center space-x-3">
-                        <!-- <span class="font-semibold text-sm px-2 py-0.5 rounded ${needToReview ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}">${claim.error_status}</span> -->
+                        <!-- <span class="font-semibold text-sm px-2 py-0.5 rounded ${needToReview ? 'bg-red-100 text-red-500' : 'bg-green-100 text-green-700'}">${claim.error_status}</span> -->
                         <span
                             class="font-semibold text-sm px-2 py-0.5 rounded ${
                                         needToReview
@@ -199,6 +199,10 @@ function submitFix() {
     }
 
     populateClaimList();
+    hideModal();
+}
+
+function closeDialog() {
     hideModal();
 }
 

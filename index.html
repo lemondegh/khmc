@@ -59,9 +59,9 @@
 
             <div class="p-6 space-y-4">
                 <div>
-                    <label class="block text-sm font-semibold text-red-600">검토 필요 사항(심사팀)</label>
+                    <label class="block text-sm font-semibold text-red-500">검토 필요 사항(심사팀)</label>
                     <p id="modal-error-description"
-                        class="text-gray-800 text-lg font-medium p-3 bg-red-50 rounded-lg border border-red-200"></p>
+                        class="text-gray-800 text-md font-medium p-3 bg-red-50 rounded-lg border border-red-200"></p>
                 </div>
 
                 <div>
@@ -78,15 +78,23 @@
                 </div>
             </div>
 
-            <footer class="bg-gray-50 p-4 flex justify-end space-x-3">
+            <footer class="bg-gray-50 p-4 flex items-center space-x-3">
                 <button onclick="maintainReview()"
-                    class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition">
+                    class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transform hover:-translate-y-0.5 transition duration-200">
                     처방 유지
                 </button>
                 <button onclick="submitFix()"
-                    class="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition">선택안으로
-                    수정</button>
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transform hover:-translate-y-0.5 transition duration-200">
+                    선택안으로 수정
+                </button>
+
+                <!-- 닫기 버튼 오른쪽 끝으로 -->
+                <button onclick="closeDialog()"
+                    class="ml-auto px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transform hover:-translate-y-0.5 transition duration-200">
+                    닫기
+                </button>
             </footer>
+
         </div>
     </div>
 
