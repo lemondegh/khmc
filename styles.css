@@ -1,0 +1,32 @@
+/* Inter 폰트 적용 (Tailwind 기본 폰트와 유사) */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f3f4f6;
+    /* EMR 배경색과 유사한 회색 */
+}
+
+/* 라디오 버튼 커스텀 스타일 */
+.custom-radio:checked {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");
+    background-color: #3b82f6;
+    /* blue-500 */
+    border-color: #3b82f6;
+}
+
+.custom-radio {
+    appearance: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid #d1d5db;
+    /* gray-300 */
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    margin-right: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.custom-radio:checked+span {
+    font-weight: 600;
+}
