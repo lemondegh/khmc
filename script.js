@@ -9,6 +9,7 @@ const mockClaimDatabase = [
         treatment_date: "2025.10.16",
         error_status: "검토 필요",
         error_description: "상병-약제 불일치 (규칙 2-1 기준)",
+        review_result: "",
         prescription: "Amoxicillin 캡슐 (5일)"
     },
     {
@@ -20,6 +21,7 @@ const mockClaimDatabase = [
         treatment_date: "2025.10.18",
         error_status: "검토 필요",
         error_description: "고가 검사 기준 초과 (규칙 4-1 기준)",
+        review_result: "",
         prescription: "복부 CT (1회)"
     },
     {
@@ -31,6 +33,7 @@ const mockClaimDatabase = [
         treatment_date: "2025.10.20",
         error_status: "검토 필요",
         error_description: "약제 단위 착오 (규칙 6-2 기준)",
+        review_result: "",
         prescription: "천식흡입제 (1 Box)"
     },
     {
@@ -42,6 +45,7 @@ const mockClaimDatabase = [
         treatment_date: "2025.10.15",
         error_status: "정상",
         error_description: "만성질환 관리 기준 적합",
+        review_result: "",
         prescription: "고혈압 약제 (90일)"
     }
 ];
@@ -89,12 +93,24 @@ function populateClaimList() {
     listElement.innerHTML = '';
 
     mockClaimDatabase.forEach(claim => {
-        const isError = claim.error_status === '검토 필요';
+        const needToReview = claim.error_status === '검토 필요';
+        const reviewDone = claim.review_result === '이전처방 유지'
         const cardHtml = `
-            <div id="card-${claim.claim_serial_no}" class="border rounded-lg p-4 flex justify-between items-center transition-all ${isError ? 'border-red-200 bg-red-50' : 'border-gray-200 bg-white'}">
+            <div id="card-${claim.claim_serial_no}" class="border rounded-lg p-4 flex justify-between items-center transition-all ${needToReview ? 'border-red-200 bg-red-50' : 'border-gray-200 bg-white'}">
                 <div>
                     <div class="flex items-center space-x-3">
-                        <span class="font-semibold text-sm px-2 py-0.5 rounded ${isError ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}">${claim.error_status}</span>
+                        <!-- <span class="font-semibold text-sm px-2 py-0.5 rounded ${needToReview ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}">${claim.error_status}</span> -->
+                        <span
+                            class="font-semibold text-sm px-2 py-0.5 rounded ${
+                                        needToReview
+                                            ? 'bg-red-100 text-red-700'
+                                            : reviewDone
+                                                ? 'bg-blue-100 text-blue-700'
+                                                : 'bg-green-100 text-green-700'
+                                        }"
+                            >
+                            ${claim.error_status}
+                        </span>
                         <span class="font-bold text-lg text-gray-800">${claim.main_symptom_name} (${claim.main_symptom_code})</span>
                     </div>
                     <p class="text-sm text-gray-600 mt-1">
@@ -103,11 +119,11 @@ function populateClaimList() {
                     <p class="text-xs text-gray-500 mt-1">사유: <span id="desc-${claim.claim_serial_no}">${claim.error_description}</span></p>
                 </div>
                 <div>
-                    ${isError ?
+                    ${needToReview ?
             `<button onclick="showSuggestionModal('${claim.claim_serial_no}')" class="bg-blue-600 text-white px-3 py-2 rounded-full text-sm font-semibold hover:bg-blue-700 transform hover:-translate-y-0.5 transition duration-200">
                                 AI 검토
                              </button>` :
-                `<button class="bg-gray-300 text-gray-600 px-3 py-2 rounded-full text-sm font-semibold cursor-not-allowed">검토 완료</button>`
+            `<button class="bg-gray-300 text-gray-600 px-3 py-2 rounded-full text-sm font-semibold cursor-not-allowed">${reviewDone ? '검토 완료' : '수정 완료'}</button>`
             }
                 </div>
             </div>
@@ -151,14 +167,15 @@ function hideModal() {
     setTimeout(() => { modal.classList.add('hidden'); }, 200);
 }
 
-// ✅ "취소 (처방 유지)" 클릭 시 처리
-function cancelReview() {
+// ✅ "처방 유지" 클릭 시 처리
+function maintainReview() {
     if (!currentClaimSerial) return;
 
     const claimIndex = mockClaimDatabase.findIndex(c => c.claim_serial_no === currentClaimSerial);
     if (claimIndex !== -1) {
         const claim = mockClaimDatabase[claimIndex];
         claim.error_status = "검토 완료";
+        claim.review_result = "이전처방 유지";
         claim.error_description = `<strong>[이전처방 유지] </strong>, ${claim.error_description}`;
     }
 
