@@ -17,18 +17,18 @@
         <!-- EMR 헤더 -->
         <header class="bg-gray-800 text-white p-4 flex justify-between items-center">
             <div>
-                <h1 class="text-xl font-bold">MediSystem EMR</h1>
+                <h1 class="text-xl font-bold">CareSync EMR</h1>
                 <p class="text-sm text-gray-300">로그인: Dr. 홍길동 (이비인후과)</p>
             </div>
             <div class="text-sm">
                 <span class="inline-block bg-red-500 w-3 h-3 rounded-full mr-2"></span>
-                <span class="font-semibold">심사팀 검토 필요: 3건</span>
+                <span class="font-semibold">심사팀 검토 요청 : 3건</span>
             </div>
         </header>
 
         <!-- 메인 컨텐츠 -->
         <main class="p-6">
-            <h2 class="text-lg font-semibold mb-1 text-gray-700">심사팀 검토 필요 목록 (삭감 위험)</h2>
+            <h2 class="text-lg font-semibold mb-1 text-gray-700">심사팀 검토 요청 목록 (삭감 위험)</h2>
 
             <!-- 안내 문구 -->
             <p class="mb-6 p-3 bg-blue-100 text-blue-800 rounded-lg text-sm flex items-center shadow-inner">
@@ -38,8 +38,8 @@
                         d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
                         clip-rule="evenodd" />
                 </svg>
-                우측 &nbsp;<span
-                    class="inline-flex items-center justify-center h-7 px-3 text-sm font-semibold bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700 transition-colors cursor-pointer active:shadow-none active:translate-y-px">AI
+                <span
+                    class="inline-flex items-center justify-center h-7 px-3 text-sm font-semibold bg-blue-600 text-white rounded-full shadow-md hover:bg-blue-700 transition-colors cursor-pointer active:shadow-none active:translate-y-px">AI
                     검토</span> &nbsp;클릭 후 선택안으로 수정을 하시면 EMR에 자동 반영되오니 별도로 처리하지 않으셔도 됩니다.
             </p>
 
@@ -61,14 +61,14 @@
                 <div>
                     <label class="block text-sm font-semibold text-red-600">검토 필요 사항(심사팀)</label>
                     <p id="modal-error-description"
-                        class="text-gray-800 text-lg font-medium p-3 bg-red-50 rounded-md border border-red-200"></p>
+                        class="text-gray-800 text-lg font-medium p-3 bg-red-50 rounded-lg border border-red-200"></p>
                 </div>
 
                 <div>
                     <label class="block text-sm font-semibold text-gray-600">현재 처방 내역</label>
-                    <div class="p-3 bg-gray-50 rounded-md border border-gray-200">
+                    <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
                         <p class="text-gray-700"><strong>주 상병:</strong> <span id="modal-symptom"></span></p>
-                        <p class="text-gray-700"><strong>문제 처방:</strong> <span id="modal-prescription"></span></p>
+                        <p class="text-gray-700"><strong>검토필요 처방:</strong> <span id="modal-prescription"></span></p>
                     </div>
                 </div>
 
@@ -79,11 +79,12 @@
             </div>
 
             <footer class="bg-gray-50 p-4 flex justify-end space-x-3">
-                <button onclick="hideModal()"
-                    class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md font-semibold hover:bg-gray-300 transition">취소
-                    (처방 유지)</button>
+                <button onclick="cancelReview()"
+                    class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition">
+                    처방 유지
+                </button>
                 <button onclick="submitFix()"
-                    class="px-4 py-2 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition">선택안으로
+                    class="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition">선택안으로
                     수정</button>
             </footer>
         </div>

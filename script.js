@@ -104,10 +104,10 @@ function populateClaimList() {
                 </div>
                 <div>
                     ${isError ?
-                `<button onclick="showSuggestionModal('${claim.claim_serial_no}')" class="bg-blue-600 text-white px-3 py-2 rounded-md text-sm font-semibold hover:bg-blue-700 transition">
+            `<button onclick="showSuggestionModal('${claim.claim_serial_no}')" class="bg-blue-600 text-white px-3 py-2 rounded-full text-sm font-semibold hover:bg-blue-700 transform hover:-translate-y-0.5 transition duration-200">
                                 AI 검토
                              </button>` :
-                `<button class="bg-gray-300 text-gray-600 px-3 py-2 rounded-md text-sm font-semibold cursor-not-allowed">승인 완료</button>`
+                `<button class="bg-gray-300 text-gray-600 px-3 py-2 rounded-full text-sm font-semibold cursor-not-allowed">검토 완료</button>`
             }
                 </div>
             </div>
@@ -137,7 +137,7 @@ async function showSuggestionModal(claimSerialNo) {
     suggestionContainer.innerHTML = '';
     response.suggestions.forEach((sug, index) => {
         suggestionContainer.innerHTML += `
-            <label for="${sug.id}" class="block p-3 border rounded-md hover:bg-blue-50 cursor-pointer transition">
+            <label for="${sug.id}" class="block p-3 border rounded-full hover:bg-blue-50 cursor-pointer transition">
                 <input type="radio" name="suggestion" id="${sug.id}" value="${sug.text}" class="custom-radio" ${index === 0 ? 'checked' : ''}>
                 <span class="text-gray-700">${sug.text}</span>
             </label>
@@ -151,7 +151,22 @@ function hideModal() {
     setTimeout(() => { modal.classList.add('hidden'); }, 200);
 }
 
-// 수정 적용
+// ✅ "취소 (처방 유지)" 클릭 시 처리
+function cancelReview() {
+    if (!currentClaimSerial) return;
+
+    const claimIndex = mockClaimDatabase.findIndex(c => c.claim_serial_no === currentClaimSerial);
+    if (claimIndex !== -1) {
+        const claim = mockClaimDatabase[claimIndex];
+        claim.error_status = "검토 완료";
+        claim.error_description = `<strong>[이전처방 유지] </strong>, ${claim.error_description}`;
+    }
+
+    populateClaimList();
+    hideModal();
+}
+
+// '선택안으로 수정' 버튼 클릭 시
 function submitFix() {
     const selectedCard = document.querySelector('input[name="suggestion"]:checked');
     if (!selectedCard) {
@@ -163,7 +178,7 @@ function submitFix() {
     const claimIndex = mockClaimDatabase.findIndex(c => c.claim_serial_no === currentClaimSerial);
     if (claimIndex !== -1) {
         mockClaimDatabase[claimIndex].error_status = '수정 완료';
-        mockClaimDatabase[claimIndex].error_description = `[AI 제안 적용] ${selectedText}`;
+        mockClaimDatabase[claimIndex].error_description = `<strong>[AI 제안 적용] </strong>${selectedText}`;
     }
 
     populateClaimList();
